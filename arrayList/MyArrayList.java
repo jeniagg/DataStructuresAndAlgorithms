@@ -1,5 +1,7 @@
 package arrayList;
 
+
+import java.util.Arrays;
 import java.util.Collection;
 
 public class MyArrayList<T> implements MyContainer<T> {
@@ -20,8 +22,10 @@ public class MyArrayList<T> implements MyContainer<T> {
 		return data[index];
 	}
 
-	public void setData(int index, T element) {
+	public T setData(int index, T element) {
+		T previous = data[index];
 		this.data[index] = element;
+		return previous;
 	}
 
 	public void resize() {
@@ -34,45 +38,51 @@ public class MyArrayList<T> implements MyContainer<T> {
 	}
 
 	@Override
-	public void add(int index, T element) {
-		if (size == capacity) {
-			resize();
-		}
-		if (index < size) {
-			for (int i = size - 1; i >= index; i--) {
-				data[i+1] = data[i];
+	public T remove(int index) {
+		if (index < 0 || index >= size) {
+			System.out.println("Error");
+			return null;
 			}
-		}
-			data[index] = (T) element;
-		size++;
-	}
-	
-	@Override
-	public void remove(int index) {
-		for (int i = index; i < size - 1; i++) {
+		for (int i = index; i < size; i++) {
 			data[i] = data[i + 1];
 		}
 		size--;
+		return data[index];
 	}
 	
-	public boolean remove(T element) {
+	public boolean removeElement(T element) {
+		boolean isChanged = false;
 		for (int i = 0; i < size; i++) {
 			if (data[i] == element) {
 				remove(i);
-				return true;
+				isChanged = true;
 			}
 		}
-		return false;
+		return isChanged;
 	}
 	
 	public boolean removeAll(Collection<T> c) {
 		boolean isRemoveAll = false;
 		for (T element : c) {
-			remove(element);
+			if (removeElement(element)) {
+					removeElement(element);
+				}
 			isRemoveAll = true;
 		}
 		return isRemoveAll;
-	}	
+	}
+	
+ 	protected void removeRange(int fromIndex, int toIndex) {
+ 		if (fromIndex < 0 || toIndex > size) {
+ 			System.out.println("Error");
+ 			return;
+ 		}
+ 		int count = toIndex - fromIndex; 
+ 		while (count > 0) {
+ 			remove(fromIndex);
+ 			count--;
+ 		}
+ 	}
 	
 	public void clear() {
 		for (int i = 0; i < size - 1; i++) {
@@ -102,6 +112,40 @@ public class MyArrayList<T> implements MyContainer<T> {
 		data[size] = element;
 		size++;
 		return true;
+	}
+	@Override
+	public void add(int index, T element) {
+		if (size == capacity) {
+			resize();
+		}
+		if (index < size) {
+			for (int i = size - 1; i >= index; i--) {
+				data[i+1] = data[i];
+			}
+		}
+			data[index] = (T) element;
+		size++;
+	}
+	
+	public boolean addAll(Collection<T> c) {
+		boolean isChanged = false; 
+		for (T element : c) {
+			add(element);
+			if (add(element)) {
+				isChanged = true;
+			}
+		}
+		return isChanged;
+	}
+	
+	public boolean addAll(int index, Collection<T> c) {
+		boolean isChanged = false;
+		for (T element : c) {
+			add(index,element);
+			index++;
+			isChanged = true;
+		}	
+		return isChanged;
 	}
 	
 	public Object clone() {
@@ -138,5 +182,34 @@ public class MyArrayList<T> implements MyContainer<T> {
 		}
 		return -1;
 	}
+	
+ 	public boolean retainAll(Collection<T> c) {
+ 		boolean isChanged = false;
+ 		for (int i = 0; i < size; i++) {
+ 			if (!c.contains(data[i])) {
+ 				removeElement(data[i]);
+ 				i--;
+ 				isChanged = true;
+ 			}
+ 		}
+ 		return isChanged;
+ 	}
+ 	public MyArrayList<T> subList(int fromIndex, int toIndex) {
+ 		MyArrayList<T> newList = new MyArrayList<T>();
+ 		if (fromIndex < 0 || toIndex > size) {
+ 			System.out.println("Error");
+ 			return null;
+ 		}
+ 		
+ 		for (int i = fromIndex; i < toIndex; i++) {
+ 			newList.add(data[i]);
+ 		}
+		return newList;
+ 	}
+ 	
+ 	public Object[] toArray() {
+ 		return Arrays.copyOf(data, size());
+ 	}
+ 	
 
 }
