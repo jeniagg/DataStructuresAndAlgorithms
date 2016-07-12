@@ -1,6 +1,8 @@
 package linkedList;
 
-public class LinkedList<T> {
+import arrayList.MyContainer;
+
+public class LinkedList<T> implements MyContainer<T>{
 
 	private Node<T> head = null;
 	private	Node<T> tail = null;
@@ -13,12 +15,19 @@ public class LinkedList<T> {
 		}
 		return node;
 	}
-	
-	public void append(T value) {
-		Node<T> node = new Node<T>(null, value);
-		tail.setNext(node);
-		tail = node;
+
+	@Override
+	public boolean add(T element) {
+		Node<T> node = new Node<T>(null, element);
+		if (size == 0) {
+			head = node;
+			tail = node;
+		} else {
+			tail.setNext(node);
+			tail = node;
+		}
 		this.size++;
+		return true;
 	}
 	
 	public void prepend(T value) {
@@ -27,31 +36,35 @@ public class LinkedList<T> {
 		this.size++;
 	}
 	
-	public void add(int index, T value) {
+	@Override
+	public void add(int index, T element) {
 		if (index < 0 || index > size) {
 			throw new IndexOutOfBoundsException();
 		} 
 		if (size == 0) {
-			Node<T> node = new Node<T>(null, value);
+			Node<T> node = new Node<T>(null, element);
 			head = node;
 			tail = node;
 			this.size++;
 		} else if (index == 0) {
-			this.prepend(value);
+			this.prepend(element);
 		} else if (index == size) {
-			this.append(value);
+			this.add(element);
 		} else {
 			Node<T> preNode = this.getNode(index - 1);
-			Node<T> node = new Node<T>(preNode.getNext(), value);
+			Node<T> node = new Node<T>(preNode.getNext(), element);
 			preNode.setNext(node);
 			this.size++;
 		}
 	}
-
-	public void delete(int index) {
+	
+	@Override
+	public T remove(int index) {
 		if (index < 0 || index >= size) {
 			throw new IndexOutOfBoundsException();
 		}
+		T removedNode = this.getValue(index);
+		
 		if (index == 0) {
 			this.head = head.getNext();
 		} else {
@@ -62,16 +75,19 @@ public class LinkedList<T> {
 			}
 		}
 		this.size--;
+		return (T) removedNode;
 	}
 	
 	public T getValue(int index) {
 		return this.getNode(index).getValue();
 	}
 	
+	@Override
 	public int size() {
 		return this.size;
 	}
 	
+	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder("[");
 		Node<T> nodeIterator = head;
@@ -82,4 +98,14 @@ public class LinkedList<T> {
 		str.append(nodeIterator.getValue()).append("]");
 		return str.toString();
 	}
+	
+	@Override
+	public boolean isEmpty() {
+		if (head == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }
