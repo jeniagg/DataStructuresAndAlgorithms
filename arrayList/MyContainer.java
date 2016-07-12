@@ -7,5 +7,6 @@ public interface MyContainer<T> {
 	public T remove(int index);
 	public int size();
 	public String toString();
+	public boolean isEmpty();
 
 }

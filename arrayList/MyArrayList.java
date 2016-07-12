@@ -2,7 +2,7 @@ package arrayList;
 
 import java.util.Collection;
 
-public class MyArrayList<T> implements MyContainer<T> {
+public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
 	private T[] data;
 	private int size = 0;
 	private int capacity = 10;
@@ -16,16 +16,22 @@ public class MyArrayList<T> implements MyContainer<T> {
 		data = (T[]) new Object[capacity];
 	}
 
+	@Override
 	public T getData(int index) {
+		if (index < 0 || index > size - 1) {
+			System.out.println(" Wrong index");
+		}
 		return data[index];
 	}
-
+	
+	@Override
 	public T setData(int index, T element) {
 		T previous = data[index];
 		this.data[index] = element;
 		return previous;
 	}
 
+	@Override
 	public void resize() {
 		capacity *= 2;
 		T[] temp = (T[])new Object[capacity];
@@ -48,6 +54,7 @@ public class MyArrayList<T> implements MyContainer<T> {
 		return data[index];
 	}
 	
+	@Override
 	public boolean removeElement(T element) {
 		boolean isChanged = false;
 		for (int i = 0; i < size; i++) {
@@ -82,6 +89,7 @@ public class MyArrayList<T> implements MyContainer<T> {
  		}
  	}
 	
+ 	@Override
 	public void clear() {
 		for (int i = 0; i < size - 1; i++) {
 			data[i] = data[i+1];
@@ -89,6 +97,7 @@ public class MyArrayList<T> implements MyContainer<T> {
 		size = 0;
 	}
 	
+ 	@Override
 	public boolean isEmpty() {
 		if (size == 0) {
 			return true;
@@ -195,13 +204,14 @@ public class MyArrayList<T> implements MyContainer<T> {
  	}
  	public MyArrayList<T> subList(int fromIndex, int toIndex) {
  		MyArrayList<T> newList = new MyArrayList<T>();
- 		try {
+ 			if (fromIndex < 0 || toIndex > size || fromIndex > toIndex ) {
+ 				System.out.println("Wrong index of subList");
+ 				return null;
+ 			}
  			for (int i = fromIndex; i < toIndex; i++) {
  				newList.add(getData(i));
  			}
- 		} catch(IndexOutOfBoundsException e ) {
- 			System.out.println("Exception is catched " + e);
- 		}
+ 	
 		return newList;
  	}
  	
@@ -212,7 +222,8 @@ public class MyArrayList<T> implements MyContainer<T> {
  		}
  		return arr;	
  	}
-
+ 	
+ 	@Override
  	public String toString() {
 		StringBuilder str = new StringBuilder("[");
 		for (int i = 0; i < size - 1; i++) {
@@ -222,4 +233,10 @@ public class MyArrayList<T> implements MyContainer<T> {
 		str.append(getData(size - 1)).append("]");
 		return str.toString();
 	}
+
+	
+
+	
+
+	
 }
