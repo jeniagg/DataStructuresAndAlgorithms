@@ -6,5 +6,6 @@ public interface MyContainer<T> {
 	public boolean add(T element);
 	public T remove(int index);
 	public int size();
+	public String toString();
 
 }

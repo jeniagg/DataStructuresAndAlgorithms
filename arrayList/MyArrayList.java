@@ -1,7 +1,5 @@
 package arrayList;
 
-
-import java.util.Arrays;
 import java.util.Collection;
 
 public class MyArrayList<T> implements MyContainer<T> {
@@ -113,6 +111,7 @@ public class MyArrayList<T> implements MyContainer<T> {
 		size++;
 		return true;
 	}
+	
 	@Override
 	public void add(int index, T element) {
 		if (size == capacity) {
@@ -148,12 +147,12 @@ public class MyArrayList<T> implements MyContainer<T> {
 		return isChanged;
 	}
 	
-	public Object clone() {
+	public T clone() {
 		MyArrayList<T> newData = new MyArrayList<T>(capacity);
 		for (int i = 0; i < size; i++) {
-			newData.add(data[i]);
+			newData.add(getData(i));
 		}
-		return newData;
+		return (T) newData;
 	}
 	
 	public boolean contains(T element) {
@@ -196,20 +195,31 @@ public class MyArrayList<T> implements MyContainer<T> {
  	}
  	public MyArrayList<T> subList(int fromIndex, int toIndex) {
  		MyArrayList<T> newList = new MyArrayList<T>();
- 		if (fromIndex < 0 || toIndex > size) {
- 			System.out.println("Error");
- 			return null;
- 		}
- 		
- 		for (int i = fromIndex; i < toIndex; i++) {
- 			newList.add(data[i]);
+ 		try {
+ 			for (int i = fromIndex; i < toIndex; i++) {
+ 				newList.add(getData(i));
+ 			}
+ 		} catch(IndexOutOfBoundsException e ) {
+ 			System.out.println("Exception is catched " + e);
  		}
 		return newList;
  	}
  	
- 	public Object[] toArray() {
- 		return Arrays.copyOf(data, size());
+ 	public T[] toArray() {
+ 		T[] arr = (T[]) new Object[capacity];
+ 		for (int i = 0; i < size; i++ ) {
+ 			arr[i] = getData(i);
+ 		}
+ 		return arr;	
  	}
- 	
 
+ 	public String toString() {
+		StringBuilder str = new StringBuilder("[");
+		for (int i = 0; i < size - 1; i++) {
+			str.append(getData(i));
+			str.append(", ");
+		}
+		str.append(getData(size - 1)).append("]");
+		return str.toString();
+	}
 }
