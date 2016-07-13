@@ -1,5 +1,6 @@
 package arrayList;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
@@ -237,7 +238,6 @@ public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
  			for (int i = fromIndex; i < toIndex; i++) {
  				newList.add(getData(i));
  			}
- 	
 		return newList;
  	}
  	
@@ -247,6 +247,22 @@ public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
  			arr[i] = getData(i);
  		}
  		return arr;	
+ 	}
+
+ 	public <T> T[] toArray(T[] a) {
+ 		if (a == null) {
+ 			throw new NullPointerException();
+ 		} else if (!a.getClass().isAssignableFrom(data.getClass())) {
+ 			throw new ArrayStoreException();
+ 		}
+ 		if (a.length < size) {
+ 			return (T[]) Arrays.copyOf(data, size, a.getClass());
+ 		}
+ 		System.arraycopy(data, 0, a, 0, size);
+ 		if (a.length > size) {
+ 			a[size] = null;
+ 		}
+ 		return a;
  	}
  	
  	@Override
@@ -260,4 +276,7 @@ public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
 		return str.toString();
 	}
 	
+ 	public void trimToSize() {
+ 		capacity = size;
+ 	}
 }
