@@ -19,13 +19,16 @@ public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
 	@Override
 	public T getData(int index) {
 		if (index < 0 || index > size - 1) {
-			System.out.println(" Wrong index");
+			throw new IndexOutOfBoundsException();
 		}
 		return data[index];
 	}
 	
 	@Override
 	public T setData(int index, T element) {
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException();
+		}
 		T previous = data[index];
 		this.data[index] = element;
 		return previous;
@@ -44,8 +47,7 @@ public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
 	@Override
 	public T remove(int index) {
 		if (index < 0 || index >= size) {
-			System.out.println("Error");
-			return null;
+			throw new IndexOutOfBoundsException();
 			}
 		for (int i = index; i < size; i++) {
 			data[i] = data[i + 1];
@@ -68,6 +70,9 @@ public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
 	
 	public boolean removeAll(Collection<T> c) {
 		boolean isRemoveAll = false;
+		if (c == null) {
+			throw new NullPointerException();
+		}
 		for (T element : c) {
 			if (removeElement(element)) {
 					removeElement(element);
@@ -78,9 +83,8 @@ public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
 	}
 	
  	protected void removeRange(int fromIndex, int toIndex) {
- 		if (fromIndex < 0 || toIndex > size) {
- 			System.out.println("Error");
- 			return;
+ 		if (fromIndex < 0 || fromIndex >= size || toIndex < fromIndex || toIndex > size) {
+ 			throw new IndexOutOfBoundsException();
  		}
  		int count = toIndex - fromIndex; 
  		while (count > 0) {
@@ -126,6 +130,11 @@ public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
 		if (size == capacity) {
 			resize();
 		}
+		
+		if (index < 0 || index > size) {
+			throw new IndexOutOfBoundsException();
+		}
+		
 		if (index < size) {
 			for (int i = size - 1; i >= index; i--) {
 				data[i+1] = data[i];
@@ -137,6 +146,11 @@ public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
 	
 	public boolean addAll(Collection<T> c) {
 		boolean isChanged = false; 
+		
+		if (c == null) {
+			throw new NullPointerException();
+		}
+		
 		for (T element : c) {
 			add(element);
 			if (add(element)) {
@@ -148,6 +162,13 @@ public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
 	
 	public boolean addAll(int index, Collection<T> c) {
 		boolean isChanged = false;
+		
+		if (c == null) {
+			throw new NullPointerException();
+		} else if (index < 0 || index > size) {
+			throw new IndexOutOfBoundsException();
+		}
+		
 		for (T element : c) {
 			add(index,element);
 			index++;
@@ -193,6 +214,9 @@ public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
 	
  	public boolean retainAll(Collection<T> c) {
  		boolean isChanged = false;
+ 		if (c == null) {
+ 			throw new NullPointerException();
+ 		}
  		for (int i = 0; i < size; i++) {
  			if (!c.contains(data[i])) {
  				removeElement(data[i]);
@@ -202,12 +226,14 @@ public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
  		}
  		return isChanged;
  	}
+ 	
  	public MyArrayList<T> subList(int fromIndex, int toIndex) {
  		MyArrayList<T> newList = new MyArrayList<T>();
- 			if (fromIndex < 0 || toIndex > size || fromIndex > toIndex ) {
- 				System.out.println("Wrong index of subList");
- 				return null;
- 			}
+ 			if (fromIndex < 0 || toIndex > size) {
+ 				throw new IndexOutOfBoundsException();
+ 			} else if (fromIndex > toIndex) {
+ 				throw new IllegalArgumentException();
+ 			} 
  			for (int i = fromIndex; i < toIndex; i++) {
  				newList.add(getData(i));
  			}
@@ -233,10 +259,5 @@ public class MyArrayList<T> implements MyContainer<T>, MyList<T> {
 		str.append(getData(size - 1)).append("]");
 		return str.toString();
 	}
-
-	
-
-	
-
 	
 }
