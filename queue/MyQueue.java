@@ -6,27 +6,27 @@ import java.util.NoSuchElementException;
 public class MyQueue<T> {
 	ArrayList<T> arr = new ArrayList<T>();
 	int size = 0;
-	
+
 	public MyQueue() {
-		
+
 	}
-	
+
 	public int size() {
 		return size;
 	}
-	
+
 	public boolean isEmpty() {
 		if (size == 0) {
 			return true;
 		}
 		return false;
 	}
-	
-	public void push(T element) {
+
+	public void add(T element) {
 		arr.add(element);
 		size++;
 	}
-	
+
 	public T remove() {
 		T element = arr.get(0);
 		if (isEmpty()) {
@@ -36,22 +36,35 @@ public class MyQueue<T> {
 		size--;
 		return element;
 	}
-	
+
+	public T poll() {
+		if (isEmpty()) {
+			return null;
+		}
+		T element = arr.get(0);
+		arr.remove(0);
+		size--;
+		return element;
+	}
+
 	public T peek() {
 		if (isEmpty()) {
 			return null;
 		}
 		return arr.get(0);
 	}
-	
+
 	public T element() {
 		if (isEmpty()) {
 			throw new NoSuchElementException();
 		}
 		return arr.get(0);
 	}
-	
+
 	public String toString() {
+		if (isEmpty()) {
+			return null;
+		}
 		StringBuilder str = new StringBuilder("[");
 		for (int i = 0; i < size - 1; i++) {
 			str.append(arr.get(i));
@@ -61,5 +74,5 @@ public class MyQueue<T> {
 		str.append("]");
 		return str.toString();
 	}
-	
+
 }
