@@ -9,6 +9,7 @@ public class Main {
 		
 		System.out.println("Bubble Sort: " + Arrays.toString(BubbleSort.bubbleSort(arr)));
 		System.out.println("Selection Sort: " + Arrays.toString(SelectionSort.selectionSort(arr)));
+		System.out.println("Quick Sort: " + Arrays.toString(QuickSort.quickSort(arr, 0, arr.length - 1)));
 	
 	}
 	
