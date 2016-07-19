@@ -5,27 +5,20 @@ import java.util.Stack;
 
 public class DFS {
 
-	private Stack<Integer> st;
+	private static Stack<Integer> st = new Stack<Integer>();
 
-	public DFS() {
-		this.st = new Stack<Integer>();
-	}
+	static int[] visited = new int[1000];
 
-	public String dfs(int[][] matrix, int numberOfNodes, int source) {
+	public static String dfs(int[][] matrix, int numberOfNodes, int source) {
 		LinkedList<Integer> res = new LinkedList<Integer>();
-		int[] visited = new int[numberOfNodes];
-		for (int i = 0; i < numberOfNodes; i++) {
-			visited[i] = 0;
-		}
-
 		st.push(source);
 		visited[source] = 1;
 		res.add(source);
-
 		int element;
+
 		while (!st.isEmpty()) {
 			element = st.peek();
-			for (int i = 0; i < numberOfNodes; i++) {
+			for (int i = 0; i < numberOfNodes + 1; i++) {
 				if (matrix[element][i] == 1 && visited[i] == 0) {
 					visited[i] = 1;
 					st.push(i);

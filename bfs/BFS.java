@@ -14,9 +14,6 @@ public class BFS {
 	public String bfs(int[][] matrix, int numberOfNodes, int source) {
 
 		int[] visited = new int[numberOfNodes];
-		for (int j = 0; j < numberOfNodes; j++) {
-			visited[j] = 0;
-		}
 		LinkedList<Integer> res = new LinkedList<Integer>();
 		int i, element;
 		visited[source] = 1;
@@ -25,7 +22,7 @@ public class BFS {
 		while (!queue.isEmpty()) {
 			element = queue.remove();
 			i = 0;
-			while (i < numberOfNodes) {
+			while (i <= numberOfNodes) {
 				if (matrix[element][i] == 1 && visited[i] == 0) {
 					queue.add(i);
 					visited[i] = 1;

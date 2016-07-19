@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) {
+
 		System.out.println("Number of nodes: ");
 		Scanner scanner = new Scanner(System.in);
 		int numberOFNodes = scanner.nextInt();
@@ -18,9 +19,9 @@ public class Main {
 			}
 		}
 
-		DFS graph = new DFS();
-		System.out.println(graph.dfs(matrix, numberOFNodes, source));
+		RecursiveDFS.dfsRecursive(source, matrix, numberOFNodes);
+		System.out.println();
+		System.out.println(DFS.dfs(matrix, numberOFNodes, source));
 
 	}
-
 }
