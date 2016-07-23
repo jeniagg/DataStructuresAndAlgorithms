@@ -4,7 +4,7 @@ public class Node<T> {
 	private Node<T> previous;
 	private Node<T> next;
 	private T element;
-	
+
 	public Node(T element) {
 		this.element = element;
 		this.next = null;
