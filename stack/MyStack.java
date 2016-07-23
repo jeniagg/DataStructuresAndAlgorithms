@@ -59,6 +59,9 @@ public class MyStack<T> {
 	}
 	
 	public String toString() {
+		if (isEmpty()) {
+			return null;
+		}
 		StringBuilder  str = new StringBuilder("[");
 		for (int i = 0; i< size - 1; i++) {
 			str.append(arr.get(i));
